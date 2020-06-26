@@ -124,11 +124,11 @@ def load_data(city, month, day):
     return df
 
 
-def time_stats(df, month, day, datafilter):
+def time_stats(df, month, day, datafilter, city):
     """Displays statistics on the most frequent times of travel."""
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     start_time = time.time()
     # display the most common month
     if month == 'all':
@@ -148,11 +148,11 @@ def time_stats(df, month, day, datafilter):
     print('-'*40)
 
 
-def station_stats(df, datafilter):
+def station_stats(df, datafilter, city):
     """Displays statistics on the most popular stations and trip."""
 
     print('\nCalculating The Most Popular Stations and Trip...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     start_time = time.time()
 
     # display most commonly used start station
@@ -173,11 +173,11 @@ def station_stats(df, datafilter):
     print('-'*40)
 
 
-def trip_duration_stats(df, datafilter):
+def trip_duration_stats(df, datafilter, city):
     """Displays statistics on the total and average trip duration."""
 
     print('\nCalculating Trip Duration...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     start_time = time.time()
 
     # display total travel time
@@ -192,7 +192,7 @@ def trip_duration_stats(df, datafilter):
     print('-'*40)
 
 
-def user_stats(df, datafilter):
+def user_stats(df, datafilter, city):
     """Displays statistics on bikeshare users."""
 
     print('\nCalculating User Stats...\n')
@@ -200,7 +200,7 @@ def user_stats(df, datafilter):
 
     # Display counts of user types
     print('User type statistics...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     user_type_count = df['User Type'].value_counts()
     user_type_percent = df['User Type'].value_counts(normalize= True)
     user_type_list = user_type_count.index.tolist()   
@@ -209,7 +209,7 @@ def user_stats(df, datafilter):
 
     # Display counts of gender
     print('\nGender statistics...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     if 'Birth Year' in df.columns.values.tolist():    
         gender_count = df['Gender'].value_counts(dropna=False)
         gender_percent = df['Gender'].value_counts(dropna=False, normalize= True)
@@ -221,7 +221,7 @@ def user_stats(df, datafilter):
         
     # Display earliest, most recent, and most common year of birth
     print('\nUser year of birth statistics...\n')
-    print('<Filter: {}>'.format(datafilter.title()))
+    print('<City: {}> <Filter: {}> '.format(city.title(), datafilter.title()))
     if 'Birth Year' in df.columns.values.tolist():
         min_year = np.min(df['Birth Year'])
         max_year = np.max(df['Birth Year'])
@@ -269,10 +269,10 @@ def main():
         city, month, day, data_filter = get_filters()
         df = load_data(city, month, day)
 
-        time_stats(df, month, day, data_filter)
-        station_stats(df, data_filter)
-        trip_duration_stats(df, data_filter)
-        user_stats(df, data_filter)
+        time_stats(df, month, day, data_filter, city)
+        station_stats(df, data_filter, city)
+        trip_duration_stats(df, data_filter, city)
+        user_stats(df, data_filter, city)
         individual_data_view(df)
         
         restart = input('\nWould you like to restart? Enter yes or no.\n')
