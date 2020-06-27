@@ -49,10 +49,10 @@ def get_filters():
     # get user input for day of week (all, monday, tuesday, ... sunday) 
                 
         elif data_filter == 'day':  
-            print('\nWhich day? Monday, Tuesday, ... Sunday')
+            print('\nWhich day? Please type as an integer (e.g Monday = 0, ..., Sunday = 6).')
             while True:
-                day = input().strip().lower()
-                if day not in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'):
+                day = int(input().strip())
+                if day not in (0, 1, 2, 3, 4, 5, 6):
                     print('Please, type "day" correctly!')
                 else:
                     month = 'all'
@@ -68,10 +68,10 @@ def get_filters():
                 else:
                     break  
                 
-            print('\nWhich day? Monday, Tuesday, ... Sunday')    
+            print('\nWhich day? Please type as an integer (e.g Monday = 0, ..., Sunday = 6).')    
             while True:
-                day = input().strip().lower()
-                if day not in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'):
+                day = int(input().strip())
+                if day not in (0, 1, 2, 3, 4, 5, 6):
                     print('\nPlease, type "day" correctly!')
                 else:
                     break
@@ -107,7 +107,7 @@ def load_data(city, month, day):
     
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month_name()
-    df['day_of_week'] = df['Start Time'].dt.day_name()
+    df['day_of_week'] = df['Start Time'].dt.dayofweek
 
 
     # filter by month if applicable
@@ -119,7 +119,7 @@ def load_data(city, month, day):
     # filter by day of week if applicable
     if day != 'all':
         # filter by day of week to create the new dataframe
-        df = df[df['day_of_week'] == day.title()]
+        df = df[df['day_of_week'] == day]
     
     return df
 
@@ -138,7 +138,7 @@ def time_stats(df, month, day, datafilter, city):
     # display the most common day of week
     if day == 'all':
         day_of_week_count = df['day_of_week'].value_counts()
-        print('Most popular day:        {:<10}      Total count: {:^6,} out of {:^6,}'.format(day_of_week_count.index[0].upper(), day_of_week_count.iloc [0], df['day_of_week'].count()))
+        print('Most popular day:        {:<10}      Total count: {:^6,} out of {:^6,}'.format(day_of_week_count.index[0], day_of_week_count.iloc [0], df['day_of_week'].count()))
     
     # display the most common start hour
     start_hour_count = df['Start Time'].dt.hour.value_counts()
